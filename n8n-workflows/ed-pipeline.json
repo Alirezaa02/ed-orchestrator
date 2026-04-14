@@ -1,0 +1,170 @@
+{
+  "name": "ED Orchestrator Pipeline",
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "ED Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 300],
+      "parameters": {
+        "path": "ed-simulate",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Patient Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [340, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB9rsdsGPYwfkqhYezCn_UIl6763nlJqHA",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\"contents\":[{\"parts\":[{\"text\":\"You are a Patient Registration Agent in an Emergency Department.\\nPatient Details:\\n- Name: {{ $json.body.name }}\\n- Age: {{ $json.body.age }}, Sex: {{ $json.body.sex }}\\n- Arrival Mode: {{ $json.body.arrivalMode }}\\n- Chief Complaint: {{ $json.body.chiefComplaint }}\\n- Past Medical History: {{ $json.body.pmhx }}\\n- Medications: {{ $json.body.meds }}\\n- Allergies: {{ $json.body.allergies }}\\n\\nRespond in JSON only, no markdown:\\n{\\\"summary\\\": \\\"one sentence overview\\\", \\\"demographics\\\": \\\"formatted demographics\\\", \\\"complaint\\\": \\\"refined chief complaint in clinical language\\\"}\"}]}]}"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Parse Patient",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [560, 300],
+      "parameters": {
+        "jsCode": "const raw = items[0].json.candidates[0].content.parts[0].text.trim();\nconst clean = raw.replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'');\nconst patientAgent = JSON.parse(clean);\nreturn [{ json: { ...items[0].json, patientAgent, _input: $('ED Webhook').item.json.body } }];"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Triage Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [780, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB9rsdsGPYwfkqhYezCn_UIl6763nlJqHA",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\"contents\":[{\"parts\":[{\"text\":\"You are an Emergency Department Triage Nurse using the Australian Triage Scale (ATS).\\nPatient: {{ $json.patientAgent.summary }}\\nChief complaint: {{ $json.patientAgent.complaint }}\\nVitals: HR {{ $json._input.hr }}, RR {{ $json._input.rr }}, BP {{ $json._input.sbp }}/{{ $json._input.dbp }}, Temp {{ $json._input.temp }}°C, SpO2 {{ $json._input.spo2 }}%\\nPMHx: {{ $json._input.pmhx }}\\n\\nATS: CAT1=Resuscitation, CAT2=Emergency, CAT3=Urgent, CAT4=Semi-urgent, CAT5=Non-urgent\\n\\nRespond in JSON only:\\n{\\\"category\\\": <1-5>, \\\"categoryName\\\": \\\"name\\\", \\\"reasoning\\\": \\\"2 sentences\\\", \\\"keySymptoms\\\": [\\\"s1\\\",\\\"s2\\\"]}\"}]}]}"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Parse Triage",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 300],
+      "parameters": {
+        "jsCode": "const raw = items[0].json.candidates[0].content.parts[0].text.trim();\nconst clean = raw.replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'');\nconst triageAgent = JSON.parse(clean);\nreturn [{ json: { ...items[0].json, triageAgent } }];"
+      }
+    },
+    {
+      "id": "n6",
+      "name": "Nurse Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1220, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB9rsdsGPYwfkqhYezCn_UIl6763nlJqHA",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\"contents\":[{\"parts\":[{\"text\":\"You are a Triage Nurse recording vitals and initial orders.\\nPatient: {{ $json.patientAgent.summary }}\\nTriage: CAT {{ $json.triageAgent.category }} — {{ $json.triageAgent.categoryName }}\\nVitals: HR {{ $json._input.hr }}, RR {{ $json._input.rr }}, BP {{ $json._input.sbp }}/{{ $json._input.dbp }}, Temp {{ $json._input.temp }}°C, SpO2 {{ $json._input.spo2 }}%\\n\\nFlag abnormal vitals (HR>100 or <60, RR>20 or <12, SBP<100 or >160, Temp>38 or <36, SpO2<95). Order nursing interventions and lab investigations.\\n\\nRespond in JSON only:\\n{\\\"vitalsAssessment\\\": \\\"1-2 sentences\\\", \\\"abnormalFlags\\\": [\\\"flag1\\\"], \\\"ordersPlaced\\\": [\\\"order1\\\"], \\\"labsOrdered\\\": [\\\"lab1\\\"]}\"}]}]}"
+      }
+    },
+    {
+      "id": "n7",
+      "name": "Parse Nurse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 300],
+      "parameters": {
+        "jsCode": "const raw = items[0].json.candidates[0].content.parts[0].text.trim();\nconst clean = raw.replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'');\nconst nurseAgent = JSON.parse(clean);\nreturn [{ json: { ...items[0].json, nurseAgent } }];"
+      }
+    },
+    {
+      "id": "n8",
+      "name": "Doctor Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1660, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB9rsdsGPYwfkqhYezCn_UIl6763nlJqHA",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\"contents\":[{\"parts\">[{\"text\":\"You are an Emergency Department Doctor.\\nPatient: {{ $json.patientAgent.summary }}\\nTriage: CAT {{ $json.triageAgent.category }} — {{ $json.triageAgent.reasoning }}\\nVitals assessment: {{ $json.nurseAgent.vitalsAssessment }}\\nAbnormal flags: {{ $json.nurseAgent.abnormalFlags.join(', ') }}\\nLabs ordered: {{ $json.nurseAgent.labsOrdered.join(', ') }}\\nComplaint: {{ $json.patientAgent.complaint }}\\nPMHx: {{ $json._input.pmhx }}, Meds: {{ $json._input.meds }}, Allergies: {{ $json._input.allergies }}\\n\\nForm your clinical picture and differential diagnosis.\\n\\nRespond in JSON only:\\n{\\\"clinicalPicture\\\": \\\"2-3 sentences\\\", \\\"differentialDiagnosis\\\": [\\\"primary\\\",\\\"2nd\\\",\\\"3rd\\\"], \\\"reasoning\\\": \\\"2 sentences\\\"}\"}]}]}"
+      }
+    },
+    {
+      "id": "n9",
+      "name": "Parse Doctor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1880, 300],
+      "parameters": {
+        "jsCode": "const raw = items[0].json.candidates[0].content.parts[0].text.trim();\nconst clean = raw.replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'');\nconst doctorAgent = JSON.parse(clean);\nreturn [{ json: { ...items[0].json, doctorAgent } }];"
+      }
+    },
+    {
+      "id": "n10",
+      "name": "Decision Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [2100, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyB9rsdsGPYwfkqhYezCn_UIl6763nlJqHA",
+        "sendBody": true,
+        "contentType": "json",
+        "body": "={\"contents\":[{\"parts\":[{\"text\":\"You are the Decision Agent for an Emergency Department.\\nPatient: {{ $json.patientAgent.summary }}\\nTriage: CAT {{ $json.triageAgent.category }} — {{ $json.triageAgent.categoryName }}\\nClinical Picture: {{ $json.doctorAgent.clinicalPicture }}\\nPrimary Diagnosis: {{ $json.doctorAgent.differentialDiagnosis[0] }}\\nAbnormal vitals: {{ $json.nurseAgent.abnormalFlags.join(', ') }}\\n\\nDetermine final disposition:\\n- Admit to Hospital: needs inpatient care\\n- Short Stay Unit: needs observation 4-24h\\n- Discharge Home: safe to discharge\\n\\nRespond in JSON only:\\n{\\\"disposition\\\": \\\"Admit to Hospital|Short Stay Unit|Discharge Home\\\", \\\"confidence\\\": 0.85, \\\"probabilities\\\": {\\\"admit\\\": 0.7, \\\"shortStay\\\": 0.2, \\\"discharge\\\": 0.1}, \\\"rationale\\\": \\\"2-3 sentences\\\"}\"}]}]}"
+      }
+    },
+    {
+      "id": "n11",
+      "name": "Parse Decision",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2320, 300],
+      "parameters": {
+        "jsCode": "const raw = items[0].json.candidates[0].content.parts[0].text.trim();\nconst clean = raw.replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'');\nconst decisionAgent = JSON.parse(clean);\nreturn [{ json: { ...items[0].json, decisionAgent } }];"
+      }
+    },
+    {
+      "id": "n12",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2540, 300],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"patientAgent\": $json.patientAgent, \"triageAgent\": $json.triageAgent, \"nurseAgent\": $json.nurseAgent, \"doctorAgent\": $json.doctorAgent, \"decisionAgent\": $json.decisionAgent }",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "ED Webhook":    { "main": [[{ "node": "Patient Agent",  "type": "main", "index": 0 }]] },
+    "Patient Agent": { "main": [[{ "node": "Parse Patient",  "type": "main", "index": 0 }]] },
+    "Parse Patient": { "main": [[{ "node": "Triage Agent",   "type": "main", "index": 0 }]] },
+    "Triage Agent":  { "main": [[{ "node": "Parse Triage",   "type": "main", "index": 0 }]] },
+    "Parse Triage":  { "main": [[{ "node": "Nurse Agent",    "type": "main", "index": 0 }]] },
+    "Nurse Agent":   { "main": [[{ "node": "Parse Nurse",    "type": "main", "index": 0 }]] },
+    "Parse Nurse":   { "main": [[{ "node": "Doctor Agent",   "type": "main", "index": 0 }]] },
+    "Doctor Agent":  { "main": [[{ "node": "Parse Doctor",   "type": "main", "index": 0 }]] },
+    "Parse Doctor":  { "main": [[{ "node": "Decision Agent", "type": "main", "index": 0 }]] },
+    "Decision Agent":{ "main": [[{ "node": "Parse Decision", "type": "main", "index": 0 }]] },
+    "Parse Decision":{ "main": [[{ "node": "Respond",        "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
