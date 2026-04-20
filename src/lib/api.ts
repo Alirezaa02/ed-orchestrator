@@ -10,9 +10,12 @@ export async function runSimulation(patient: PatientInput): Promise<AgentOutputM
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(patient),
   });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`n8n error ${res.status}: ${text}`);
+  const text = await res.text();
+  if (!res.ok) throw new Error(`n8n error ${res.status}: ${text}`);
+  if (!text || text.trim() === '') throw new Error('n8n returned empty response — check Executions tab in n8n to see which node failed');
+  try {
+    return JSON.parse(text) as AgentOutputMap;
+  } catch {
+    throw new Error(`n8n response is not valid JSON. Got: ${text.slice(0, 200)}`);
   }
-  return res.json() as Promise<AgentOutputMap>;
 }

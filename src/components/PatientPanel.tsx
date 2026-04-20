@@ -9,21 +9,31 @@ interface Props {
   onStop: () => void;
 }
 
-const CAT_STYLES: Record<number, { bg: string; text: string; label: string }> = {
-  1: { bg: 'bg-red-600',    text: 'text-white', label: 'RESUSCITATION' },
-  2: { bg: 'bg-orange-500', text: 'text-white', label: 'EMERGENCY' },
-  3: { bg: 'bg-yellow-500', text: 'text-black', label: 'URGENT' },
-  4: { bg: 'bg-green-600',  text: 'text-white', label: 'SEMI-URGENT' },
-  5: { bg: 'bg-blue-600',   text: 'text-white', label: 'NON-URGENT' },
+const CAT_STYLES: Record<number, { bg: string; border: string; text: string; label: string }> = {
+  1: { bg: '#7f1d1d', border: '#ef4444', text: '#fca5a5', label: 'RESUSCITATION' },
+  2: { bg: '#7c2d12', border: '#f97316', text: '#fdba74', label: 'EMERGENCY' },
+  3: { bg: '#713f12', border: '#eab308', text: '#fde047', label: 'URGENT' },
+  4: { bg: '#14532d', border: '#22c55e', text: '#86efac', label: 'SEMI-URGENT' },
+  5: { bg: '#1e3a5f', border: '#3b82f6', text: '#93c5fd', label: 'NON-URGENT' },
 };
 
 function VitalBox({ label, value, unit, warn }: { label: string; value: string | number; unit: string; warn: boolean }) {
   return (
-    <div className={`flex flex-col items-center p-2 rounded-lg ${warn ? 'bg-orange-950 border border-orange-700' : 'bg-slate-800'}`}>
-      <span className={`text-base font-bold leading-none ${warn ? 'text-orange-400' : 'text-white'}`}>
-        {value}<span className="text-[10px] font-normal ml-0.5">{unit}</span>
+    <div style={{
+      background: warn ? '#431407' : '#1e293b',
+      border: `1px solid ${warn ? '#c2410c' : '#334155'}`,
+      borderRadius: 10,
+      padding: '10px 6px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 3,
+    }}>
+      <span style={{ fontSize: 18, fontWeight: 700, color: warn ? '#fb923c' : '#f1f5f9', lineHeight: 1 }}>
+        {value}
+        <span style={{ fontSize: 10, fontWeight: 400, marginLeft: 2, color: warn ? '#fdba74' : '#94a3b8' }}>{unit}</span>
       </span>
-      <span className="text-[10px] text-slate-400 mt-1">{label}</span>
+      <span style={{ fontSize: 10, color: '#64748b', fontWeight: 500 }}>{label}</span>
     </div>
   );
 }
@@ -41,73 +51,121 @@ export default function PatientPanel({ patient, agentOutput, running, onNewSimul
   } : { hr: false, sbp: false, spo2: false, temp: false, rr: false };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-slate-800">
-        <div className="flex items-center gap-2 mb-1">
-          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Royal North Shore ED</span>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#0f1117' }}>
+
+      {/* Header */}
+      <div style={{ padding: '16px 20px', borderBottom: '1px solid #1e293b' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 6px #ef4444' }} />
+          <span style={{ fontSize: 10, fontWeight: 600, color: '#475569', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Royal North Shore ED
+          </span>
         </div>
-        <h1 className="text-sm font-bold text-white">ED Orchestrator AI</h1>
+        <h1 style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>ED Orchestrator AI</h1>
       </div>
 
-      <div className="p-4 border-b border-slate-800 flex-shrink-0">
+      {/* Patient Card */}
+      <div style={{ padding: '16px 20px', borderBottom: '1px solid #1e293b' }}>
         {patient ? (
           <>
-            <div className="flex items-start justify-between mb-2">
-              <div className="min-w-0">
-                <p className="font-bold text-white text-sm truncate">{patient.name}</p>
-                <p className="text-xs text-slate-400">{patient.age}{patient.sex} · {patient.arrivalMode}</p>
-                <p className="text-xs text-slate-300 mt-1 leading-relaxed">{patient.chiefComplaint}</p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10, gap: 10 }}>
+              <div style={{ minWidth: 0 }}>
+                <p style={{ fontWeight: 700, color: '#f1f5f9', fontSize: 15, margin: 0, marginBottom: 3 }}>{patient.name}</p>
+                <p style={{ fontSize: 12, color: '#64748b', margin: 0, marginBottom: 6 }}>{patient.age}{patient.sex} · {patient.arrivalMode}</p>
+                <p style={{ fontSize: 12, color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>{patient.chiefComplaint}</p>
               </div>
               {cat && (
-                <span className={`text-xs font-bold px-2 py-0.5 rounded ml-2 flex-shrink-0 ${cat.bg} ${cat.text}`}>
-                  CAT {triage?.category}
-                </span>
+                <div style={{
+                  background: cat.bg,
+                  border: `1px solid ${cat.border}`,
+                  borderRadius: 8,
+                  padding: '4px 10px',
+                  flexShrink: 0,
+                }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: cat.text }}>CAT {triage?.category}</span>
+                </div>
               )}
             </div>
+
             {cat && (
-              <div className={`text-xs font-bold text-center py-1 rounded mb-3 ${cat.bg} ${cat.text}`}>{cat.label}</div>
+              <div style={{
+                background: cat.bg,
+                border: `1px solid ${cat.border}`,
+                borderRadius: 8,
+                padding: '6px 12px',
+                textAlign: 'center',
+                marginBottom: 12,
+              }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: cat.text, letterSpacing: '0.05em' }}>{cat.label}</span>
+              </div>
             )}
-            <div className="grid grid-cols-3 gap-1.5">
-              <VitalBox label="HR"   value={patient.hr}                        unit="bpm"  warn={warn.hr} />
-              <VitalBox label="BP"   value={`${patient.sbp}/${patient.dbp}`}   unit=""     warn={warn.sbp} />
-              <VitalBox label="SpO2" value={patient.spo2}                      unit="%"    warn={warn.spo2} />
-              <VitalBox label="Temp" value={patient.temp}                      unit="°C"   warn={warn.temp} />
-              <VitalBox label="RR"   value={patient.rr}                        unit="/min" warn={warn.rr} />
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+              <VitalBox label="HR"   value={patient.hr}                      unit="bpm"  warn={warn.hr} />
+              <VitalBox label="BP"   value={`${patient.sbp}/${patient.dbp}`} unit=""     warn={warn.sbp} />
+              <VitalBox label="SpO2" value={patient.spo2}                    unit="%"    warn={warn.spo2} />
+              <VitalBox label="Temp" value={patient.temp}                    unit="°C"   warn={warn.temp} />
+              <VitalBox label="RR"   value={patient.rr}                      unit="/min" warn={warn.rr} />
             </div>
           </>
         ) : (
-          <div className="text-center py-6">
-            <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-2">
-              <Users size={18} className="text-slate-500" />
+          <div style={{ textAlign: 'center', padding: '24px 0' }}>
+            <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#1e293b', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>
+              <Users size={20} color="#475569" />
             </div>
-            <p className="text-xs text-slate-500">No active patient</p>
-            <p className="text-xs text-slate-600 mt-0.5">Run a simulation to begin</p>
+            <p style={{ fontSize: 13, color: '#475569', margin: 0 }}>No active patient</p>
+            <p style={{ fontSize: 12, color: '#334155', margin: '4px 0 0' }}>Run a simulation to begin</p>
           </div>
         )}
       </div>
 
-      <nav className="p-4 space-y-1 flex-1">
+      {/* Nav */}
+      <nav style={{ padding: '12px 12px', flex: 1 }}>
         {[
-          { icon: <Activity size={14} />, label: 'Agent Pipeline', active: true },
-          { icon: <Users size={14} />,    label: 'Patient Flow' },
-          { icon: <BarChart3 size={14} />,label: 'Analytics' },
-          { icon: <Settings size={14} />, label: 'Settings' },
+          { icon: <Activity size={15} />, label: 'Agent Pipeline', active: true },
+          { icon: <Users size={15} />,    label: 'Patient Flow' },
+          { icon: <BarChart3 size={15} />,label: 'Analytics' },
+          { icon: <Settings size={15} />, label: 'Settings' },
         ].map(({ icon, label, active }) => (
-          <button key={label} className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs transition-colors ${active ? 'bg-slate-800 text-white' : 'text-slate-500 hover:text-slate-300 hover:bg-slate-800/50'}`}>
+          <button key={label} style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            padding: '9px 12px',
+            borderRadius: 8,
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: 13,
+            fontWeight: active ? 600 : 400,
+            color: active ? '#f1f5f9' : '#64748b',
+            background: active ? '#1e293b' : 'transparent',
+            marginBottom: 2,
+            textAlign: 'left',
+            transition: 'all 0.15s',
+          }}>
             {icon}{label}
           </button>
         ))}
       </nav>
 
-      <div className="p-4">
+      {/* CTA */}
+      <div style={{ padding: '16px 20px' }}>
         {running ? (
-          <button onClick={onStop} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-700 hover:bg-red-600 text-white text-sm font-semibold transition-colors">
-            <Square size={13} />Stop Simulation
+          <button onClick={onStop} style={{
+            width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            gap: 8, padding: '12px', borderRadius: 12, border: 'none', cursor: 'pointer',
+            background: '#991b1b', color: '#fff', fontSize: 14, fontWeight: 600,
+          }}>
+            <Square size={14} />Stop Simulation
           </button>
         ) : (
-          <button onClick={onNewSimulation} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors">
-            <Play size={13} />Run New Simulation
+          <button onClick={onNewSimulation} style={{
+            width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            gap: 8, padding: '12px', borderRadius: 12, border: 'none', cursor: 'pointer',
+            background: '#2563eb', color: '#fff', fontSize: 14, fontWeight: 600,
+          }}>
+            <Play size={14} />Run New Simulation
           </button>
         )}
       </div>

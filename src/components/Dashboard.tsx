@@ -24,11 +24,11 @@ const THINKING: Record<string, string[]> = {
 };
 
 const AGENT_COLORS: Record<string, string> = {
-  patientAgent:  'text-blue-400',
-  triageAgent:   'text-purple-400',
-  nurseAgent:    'text-green-400',
-  doctorAgent:   'text-amber-400',
-  decisionAgent: 'text-red-400',
+  patientAgent:  '#60a5fa',
+  triageAgent:   '#c084fc',
+  nurseAgent:    '#4ade80',
+  doctorAgent:   '#fbbf24',
+  decisionAgent: '#f87171',
 };
 
 let _id = 0;
@@ -65,8 +65,7 @@ export default function Dashboard() {
     ));
     addLog(agentId, `${AGENT_DEFS[idx].name} activated`, 'info');
 
-    const lines = THINKING[agentId] ?? ['Processing...'];
-    for (const text of lines) {
+    for (const text of THINKING[agentId] ?? ['Processing...']) {
       setAgents(prev => prev.map(a => a.id === agentId ? { ...a, thinkingText: text } : a));
       addLog(agentId, text, 'action');
       await delay(700);
@@ -88,15 +87,14 @@ export default function Dashboard() {
     setPatient(p);
     reset();
     setRunning(true);
-
     animateAgent(0, 'patientAgent');
 
     try {
       const result = await runSimulation(p);
-      const agentIds = ['patientAgent', 'triageAgent', 'nurseAgent', 'doctorAgent', 'decisionAgent'] as (keyof AgentOutputMap)[];
+      const ids = ['patientAgent', 'triageAgent', 'nurseAgent', 'doctorAgent', 'decisionAgent'] as (keyof AgentOutputMap)[];
 
-      for (let i = 0; i < agentIds.length; i++) {
-        const agentId = agentIds[i];
+      for (let i = 0; i < ids.length; i++) {
+        const agentId = ids[i];
         if (i > 0) { await animateAgent(i, agentId); await delay(300); }
         setAgentOutput(prev => {
           const updated = { ...prev, [agentId]: result[agentId] };
@@ -106,8 +104,7 @@ export default function Dashboard() {
         await delay(500);
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Unknown error';
-      setError(msg);
+      setError(err instanceof Error ? err.message : 'Unknown error');
       setAgents(prev => prev.map(a => a.status === 'active' ? { ...a, status: 'waiting' as const, thinkingText: undefined } : a));
     } finally {
       setRunning(false);
@@ -121,16 +118,35 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-[#0f1117] text-slate-200 overflow-hidden">
-      <div className="w-72 flex-shrink-0 border-r border-slate-800 flex flex-col">
-        <PatientPanel patient={patient} agentOutput={agentOutput} running={running} onNewSimulation={() => setShowModal(true)} onStop={stopSim} />
+    <div style={{ display: 'flex', height: '100vh', background: '#0a0d14', overflow: 'hidden' }}>
+
+      {/* Left — Patient Panel */}
+      <div style={{ width: 280, flexShrink: 0, borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+        <PatientPanel
+          patient={patient}
+          agentOutput={agentOutput}
+          running={running}
+          onNewSimulation={() => setShowModal(true)}
+          onStop={stopSim}
+        />
       </div>
-      <div className="flex-1 flex flex-col min-w-0 border-r border-slate-800">
+
+      {/* Centre — Pipeline */}
+      <div style={{ flex: 1, minWidth: 0, borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column' }}>
         <PipelinePanel agents={agents} step={step} running={running} />
       </div>
-      <div className="w-80 flex-shrink-0 flex flex-col">
-        <EMRPanel log={emrLog} agentOutput={agentOutput} agentColors={AGENT_COLORS} error={error} running={running} />
+
+      {/* Right — EMR */}
+      <div style={{ width: 320, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
+        <EMRPanel
+          log={emrLog}
+          agentOutput={agentOutput}
+          agentColors={AGENT_COLORS}
+          error={error}
+          running={running}
+        />
       </div>
+
       {showModal && (
         <NewSimulationModal
           demoPatients={DEMO_PATIENTS}
