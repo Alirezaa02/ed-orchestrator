@@ -1,10 +1,13 @@
 import { useState, useRef, useCallback } from 'react';
-import type { PatientInput, AgentState, EMREntry, AgentOutputMap } from '../lib/types';
+import type { PatientInput, AgentState, EMREntry, AgentOutputMap, ActiveView, SimulationRun } from '../lib/types';
 import { DEMO_PATIENTS } from '../lib/patients';
 import { runSimulation } from '../lib/api';
 import PatientPanel from './PatientPanel';
 import PipelinePanel from './PipelinePanel';
 import EMRPanel from './EMRPanel';
+import PatientFlowPanel from './PatientFlowPanel';
+import AnalyticsPanel from './AnalyticsPanel';
+import SettingsPanel from './SettingsPanel';
 import NewSimulationModal from './NewSimulationModal';
 
 const AGENT_DEFS: AgentState[] = [
@@ -35,6 +38,17 @@ let _id = 0;
 const uid = () => String(++_id);
 const ts  = () => new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
+type ErrorType = 'rateLimit' | 'network' | 'timeout' | 'empty' | 'unknown' | null;
+
+function categorizeError(err: Error): ErrorType {
+  const msg = err.message;
+  if (msg === 'TIMEOUT') return 'timeout';
+  if (msg === 'RATE_LIMIT' || msg.includes('quota') || msg.includes('429')) return 'rateLimit';
+  if (msg === 'EMPTY_RESPONSE') return 'empty';
+  if (msg.includes('fetch') || msg.includes('Failed to fetch') || msg.includes('NetworkError')) return 'network';
+  return 'unknown';
+}
+
 export default function Dashboard() {
   const [patient,     setPatient]     = useState<PatientInput | null>(null);
   const [agents,      setAgents]      = useState<AgentState[]>(AGENT_DEFS.map(a => ({ ...a })));
@@ -44,6 +58,9 @@ export default function Dashboard() {
   const [showModal,   setShowModal]   = useState(false);
   const [step,        setStep]        = useState(0);
   const [error,       setError]       = useState<string | null>(null);
+  const [errorType,   setErrorType]   = useState<ErrorType>(null);
+  const [activeView,  setActiveView]  = useState<ActiveView>('pipeline');
+  const [lastPatient, setLastPatient] = useState<PatientInput | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   const addLog = useCallback((agentId: keyof AgentOutputMap, message: string, type: EMREntry['type'] = 'info') => {
@@ -57,6 +74,7 @@ export default function Dashboard() {
     setAgentOutput({});
     setStep(0);
     setError(null);
+    setErrorType(null);
   };
 
   const animateAgent = async (idx: number, agentId: keyof AgentOutputMap) => {
@@ -64,7 +82,6 @@ export default function Dashboard() {
       i === idx ? { ...a, status: 'active' as const, thinkingText: 'Starting...' } : a
     ));
     addLog(agentId, `${AGENT_DEFS[idx].name} activated`, 'info');
-
     for (const text of THINKING[agentId] ?? ['Processing...']) {
       setAgents(prev => prev.map(a => a.id === agentId ? { ...a, thinkingText: text } : a));
       addLog(agentId, text, 'action');
@@ -83,16 +100,32 @@ export default function Dashboard() {
     if (summary) addLog(agentId, summary, 'result');
   };
 
+  const saveToAnalytics = (p: PatientInput, result: AgentOutputMap) => {
+    try {
+      const history: SimulationRun[] = JSON.parse(localStorage.getItem('sim_history') || '[]');
+      history.push({
+        id: uid(),
+        timestamp: new Date().toISOString(),
+        patientName: p.name,
+        disposition: result.decisionAgent?.disposition ?? 'Discharge Home',
+        triageCategory: result.triageAgent?.category ?? 3,
+      });
+      localStorage.setItem('sim_history', JSON.stringify(history));
+    } catch { /* ignore */ }
+  };
+
   const runSim = async (p: PatientInput) => {
     setPatient(p);
+    setLastPatient(p);
     reset();
     setRunning(true);
+    setActiveView('pipeline');
     animateAgent(0, 'patientAgent');
+    addLog('patientAgent', 'Waiting for AI response — this may take 30–60s', 'info');
 
     try {
       const result = await runSimulation(p);
       const ids = ['patientAgent', 'triageAgent', 'nurseAgent', 'doctorAgent', 'decisionAgent'] as (keyof AgentOutputMap)[];
-
       for (let i = 0; i < ids.length; i++) {
         const agentId = ids[i];
         if (i > 0) { await animateAgent(i, agentId); await delay(300); }
@@ -103,8 +136,11 @@ export default function Dashboard() {
         });
         await delay(500);
       }
+      saveToAnalytics(p, result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      const e = err instanceof Error ? err : new Error('Unknown error');
+      setErrorType(categorizeError(e));
+      setError(e.message);
       setAgents(prev => prev.map(a => a.status === 'active' ? { ...a, status: 'waiting' as const, thinkingText: undefined } : a));
     } finally {
       setRunning(false);
@@ -120,30 +156,34 @@ export default function Dashboard() {
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#0a0d14', overflow: 'hidden' }}>
 
-      {/* Left — Patient Panel */}
       <div style={{ width: 280, flexShrink: 0, borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
         <PatientPanel
           patient={patient}
           agentOutput={agentOutput}
           running={running}
+          activeView={activeView}
           onNewSimulation={() => setShowModal(true)}
           onStop={stopSim}
+          onNav={setActiveView}
         />
       </div>
 
-      {/* Centre — Pipeline */}
       <div style={{ flex: 1, minWidth: 0, borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column' }}>
-        <PipelinePanel agents={agents} step={step} running={running} />
+        {activeView === 'pipeline'    && <PipelinePanel agents={agents} step={step} running={running} />}
+        {activeView === 'patientFlow' && <PatientFlowPanel agentOutput={agentOutput} patient={patient} />}
+        {activeView === 'analytics'   && <AnalyticsPanel />}
+        {activeView === 'settings'    && <SettingsPanel />}
       </div>
 
-      {/* Right — EMR */}
       <div style={{ width: 320, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
         <EMRPanel
           log={emrLog}
           agentOutput={agentOutput}
           agentColors={AGENT_COLORS}
           error={error}
+          errorType={errorType}
           running={running}
+          onRetry={() => lastPatient && runSim(lastPatient)}
         />
       </div>
 

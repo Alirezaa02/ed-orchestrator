@@ -2,12 +2,24 @@ import { useEffect, useRef } from 'react';
 import type { EMREntry, AgentOutputMap } from '../lib/types';
 import { AlertTriangle } from 'lucide-react';
 
+type ErrorType = 'rateLimit' | 'network' | 'timeout' | 'empty' | 'unknown' | null;
+
+const ERROR_MESSAGES: Record<NonNullable<ErrorType>, { title: string; body: string }> = {
+  rateLimit: { title: 'Rate Limit Exceeded',    body: 'The AI service is busy. Wait ~60s then retry.' },
+  network:   { title: 'Cannot Reach n8n',       body: 'Make sure n8n is running on localhost:5678 and the workflow is published.' },
+  timeout:   { title: 'Request Timed Out',      body: 'No response after 120s. n8n may still be processing — check the Executions tab.' },
+  empty:     { title: 'Empty Response',         body: 'n8n returned no data. Check the Executions tab for a failed node.' },
+  unknown:   { title: 'Error',                  body: '' },
+};
+
 interface Props {
   log: EMREntry[];
   agentOutput: AgentOutputMap;
   agentColors: Record<string, string>;
   error: string | null;
+  errorType: ErrorType;
   running: boolean;
+  onRetry: () => void;
 }
 
 const AGENT_COLOR_MAP: Record<string, string> = {
@@ -55,7 +67,7 @@ function ProbBar({ label, value, color }: { label: string; value: number | null;
   );
 }
 
-export default function EMRPanel({ log, agentOutput, error, running }: Props) {
+export default function EMRPanel({ log, agentOutput, error, errorType, running, onRetry }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const outcome = agentOutput.decisionAgent;
 
@@ -110,21 +122,28 @@ export default function EMRPanel({ log, agentOutput, error, running }: Props) {
           </div>
         ))}
 
-        {error && (
+        {error && errorType && (
           <div style={{
-            display: 'flex', gap: 10, padding: '12px 14px',
+            padding: '12px 14px',
             background: '#1c0a0a', border: '1px solid #7f1d1d', borderRadius: 10, marginBottom: 12,
           }}>
-            <AlertTriangle size={14} color="#ef4444" style={{ flexShrink: 0, marginTop: 1 }} />
-            <div>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#fca5a5', margin: '0 0 4px' }}>Error</p>
-              <p style={{ fontSize: 12, color: '#f87171', margin: 0 }}>{error}</p>
-              {error.toLowerCase().includes('fetch') && (
-                <p style={{ fontSize: 11, color: '#ef4444', margin: '6px 0 0' }}>
-                  Make sure n8n is running on <code style={{ background: '#7f1d1d', padding: '1px 4px', borderRadius: 4 }}>localhost:5678</code>
+            <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+              <AlertTriangle size={14} color="#ef4444" style={{ flexShrink: 0, marginTop: 1 }} />
+              <div>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#fca5a5', margin: '0 0 4px' }}>
+                  {ERROR_MESSAGES[errorType].title}
                 </p>
-              )}
+                <p style={{ fontSize: 12, color: '#f87171', margin: 0 }}>
+                  {ERROR_MESSAGES[errorType].body || error}
+                </p>
+              </div>
             </div>
+            <button onClick={onRetry} style={{
+              width: '100%', padding: '7px', borderRadius: 8, border: '1px solid #7f1d1d',
+              background: '#2d0a0a', color: '#fca5a5', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+            }}>
+              Try Again
+            </button>
           </div>
         )}
         <div ref={bottomRef} />

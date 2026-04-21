@@ -1,12 +1,15 @@
-import type { PatientInput, AgentOutputMap } from '../lib/types';
+import React from 'react';
+import type { PatientInput, AgentOutputMap, ActiveView } from '../lib/types';
 import { Activity, Users, BarChart3, Settings, Play, Square } from 'lucide-react';
 
 interface Props {
   patient: PatientInput | null;
   agentOutput: AgentOutputMap;
   running: boolean;
+  activeView: ActiveView;
   onNewSimulation: () => void;
   onStop: () => void;
+  onNav: (view: ActiveView) => void;
 }
 
 const CAT_STYLES: Record<number, { bg: string; border: string; text: string; label: string }> = {
@@ -38,7 +41,14 @@ function VitalBox({ label, value, unit, warn }: { label: string; value: string |
   );
 }
 
-export default function PatientPanel({ patient, agentOutput, running, onNewSimulation, onStop }: Props) {
+const NAV: { icon: React.ReactElement; label: string; view: ActiveView }[] = [
+  { icon: <Activity size={15} />, label: 'Agent Pipeline', view: 'pipeline' },
+  { icon: <Users size={15} />,    label: 'Patient Flow',   view: 'patientFlow' },
+  { icon: <BarChart3 size={15} />,label: 'Analytics',      view: 'analytics' },
+  { icon: <Settings size={15} />, label: 'Settings',       view: 'settings' },
+];
+
+export default function PatientPanel({ patient, agentOutput, running, activeView, onNewSimulation, onStop, onNav }: Props) {
   const triage = agentOutput.triageAgent;
   const cat = triage ? CAT_STYLES[triage.category] : null;
 
@@ -121,32 +131,30 @@ export default function PatientPanel({ patient, agentOutput, running, onNewSimul
 
       {/* Nav */}
       <nav style={{ padding: '12px 12px', flex: 1 }}>
-        {[
-          { icon: <Activity size={15} />, label: 'Agent Pipeline', active: true },
-          { icon: <Users size={15} />,    label: 'Patient Flow' },
-          { icon: <BarChart3 size={15} />,label: 'Analytics' },
-          { icon: <Settings size={15} />, label: 'Settings' },
-        ].map(({ icon, label, active }) => (
-          <button key={label} style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            padding: '9px 12px',
-            borderRadius: 8,
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: 13,
-            fontWeight: active ? 600 : 400,
-            color: active ? '#f1f5f9' : '#64748b',
-            background: active ? '#1e293b' : 'transparent',
-            marginBottom: 2,
-            textAlign: 'left',
-            transition: 'all 0.15s',
-          }}>
-            {icon}{label}
-          </button>
-        ))}
+        {NAV.map(({ icon, label, view }) => {
+          const active = activeView === view;
+          return (
+            <button key={view} onClick={() => onNav(view)} style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '9px 12px',
+              borderRadius: 8,
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 13,
+              fontWeight: active ? 600 : 400,
+              color: active ? '#f1f5f9' : '#64748b',
+              background: active ? '#1e293b' : 'transparent',
+              marginBottom: 2,
+              textAlign: 'left',
+              transition: 'all 0.15s',
+            }}>
+              {icon}{label}
+            </button>
+          );
+        })}
       </nav>
 
       {/* CTA */}
