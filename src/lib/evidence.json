@@ -1,0 +1,1477 @@
+{
+  "abdominal_pain": {
+    "_overall": {
+      "n": 10563,
+      "admitted_pct": 2.1,
+      "short_stay_pct": 72.1,
+      "discharged_pct": 23.4,
+      "mortality_pct": 0.2,
+      "high_acuity_pct": 24.2,
+      "top_dx": [
+        "Abdominal pain"
+      ]
+    },
+    "18_39_M": {
+      "n": 1089,
+      "admitted_pct": 0.3,
+      "short_stay_pct": 78.1,
+      "discharged_pct": 18.6,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 18.4,
+      "top_dx": [
+        "Abdominal pain"
+      ]
+    },
+    "40_59_M": {
+      "n": 1436,
+      "admitted_pct": 1.6,
+      "short_stay_pct": 72.4,
+      "discharged_pct": 24.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 24.3,
+      "top_dx": [
+        "Abdominal pain",
+        "Cholelithiasis"
+      ]
+    },
+    "60_79_M": {
+      "n": 1172,
+      "admitted_pct": 2.6,
+      "short_stay_pct": 68.8,
+      "discharged_pct": 26.5,
+      "mortality_pct": 0.7,
+      "high_acuity_pct": 27.6,
+      "top_dx": [
+        "Abdominal pain",
+        "Cholelithiasis"
+      ]
+    },
+    "80_plus_M": {
+      "n": 331,
+      "admitted_pct": 10.3,
+      "short_stay_pct": 60.1,
+      "discharged_pct": 27.5,
+      "mortality_pct": 1.2,
+      "high_acuity_pct": 34.7,
+      "top_dx": [
+        "Cholelithiasis",
+        "Abdominal pain"
+      ]
+    },
+    "18_39_F": {
+      "n": 2195,
+      "admitted_pct": 0.4,
+      "short_stay_pct": 74.5,
+      "discharged_pct": 21.8,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 21.5,
+      "top_dx": [
+        "Abdominal pain"
+      ]
+    },
+    "40_59_F": {
+      "n": 2140,
+      "admitted_pct": 1.0,
+      "short_stay_pct": 73.1,
+      "discharged_pct": 23.7,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 23.4,
+      "top_dx": [
+        "Abdominal pain"
+      ]
+    },
+    "60_79_F": {
+      "n": 1633,
+      "admitted_pct": 3.0,
+      "short_stay_pct": 69.6,
+      "discharged_pct": 25.3,
+      "mortality_pct": 0.3,
+      "high_acuity_pct": 26.9,
+      "top_dx": [
+        "Abdominal pain",
+        "Cholelithiasis"
+      ]
+    },
+    "80_plus_F": {
+      "n": 567,
+      "admitted_pct": 8.8,
+      "short_stay_pct": 67.9,
+      "discharged_pct": 22.6,
+      "mortality_pct": 0.7,
+      "high_acuity_pct": 27.9,
+      "top_dx": [
+        "Abdominal pain",
+        "Cholelithiasis"
+      ]
+    }
+  },
+  "altered_mental_status": {
+    "_overall": {
+      "n": 700,
+      "admitted_pct": 8.0,
+      "short_stay_pct": 78.6,
+      "discharged_pct": 10.6,
+      "mortality_pct": 0.3,
+      "high_acuity_pct": 18.4,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "18_39_M": {
+      "n": 89,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 89.9,
+      "discharged_pct": 9.0,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 9.0,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "40_59_M": {
+      "n": 106,
+      "admitted_pct": 4.7,
+      "short_stay_pct": 82.1,
+      "discharged_pct": 10.4,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 15.1,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "60_79_M": {
+      "n": 112,
+      "admitted_pct": 10.7,
+      "short_stay_pct": 76.8,
+      "discharged_pct": 8.0,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 18.8,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "80_plus_M": {
+      "n": 65,
+      "admitted_pct": 24.6,
+      "short_stay_pct": 66.2,
+      "discharged_pct": 6.2,
+      "mortality_pct": 1.5,
+      "high_acuity_pct": 30.8,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "18_39_F": {
+      "n": 70,
+      "admitted_pct": 1.4,
+      "short_stay_pct": 82.9,
+      "discharged_pct": 14.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 15.7,
+      "top_dx": [
+        "Altered mental status"
+      ]
+    },
+    "40_59_F": {
+      "n": 91,
+      "admitted_pct": 4.4,
+      "short_stay_pct": 80.2,
+      "discharged_pct": 14.3,
+      "mortality_pct": 1.1,
+      "high_acuity_pct": 18.7,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "60_79_F": {
+      "n": 105,
+      "admitted_pct": 4.8,
+      "short_stay_pct": 80.0,
+      "discharged_pct": 14.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 18.1,
+      "top_dx": [
+        "Altered mental status",
+        "Disorientation"
+      ]
+    },
+    "80_plus_F": {
+      "n": 62,
+      "admitted_pct": 21.0,
+      "short_stay_pct": 62.9,
+      "discharged_pct": 6.5,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 27.4,
+      "top_dx": [
+        "Disorientation",
+        "Altered mental status"
+      ]
+    }
+  },
+  "back_pain": {
+    "_overall": {
+      "n": 2185,
+      "admitted_pct": 5.7,
+      "short_stay_pct": 78.0,
+      "discharged_pct": 12.8,
+      "mortality_pct": 0.2,
+      "high_acuity_pct": 18.0,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "18_39_M": {
+      "n": 123,
+      "admitted_pct": 1.6,
+      "short_stay_pct": 81.3,
+      "discharged_pct": 12.2,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 13.0,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "40_59_M": {
+      "n": 322,
+      "admitted_pct": 8.1,
+      "short_stay_pct": 76.1,
+      "discharged_pct": 12.4,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 20.2,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "60_79_M": {
+      "n": 297,
+      "admitted_pct": 6.1,
+      "short_stay_pct": 72.7,
+      "discharged_pct": 16.5,
+      "mortality_pct": 1.0,
+      "high_acuity_pct": 21.9,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "80_plus_M": {
+      "n": 91,
+      "admitted_pct": 12.1,
+      "short_stay_pct": 69.2,
+      "discharged_pct": 14.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 25.3,
+      "top_dx": []
+    },
+    "18_39_F": {
+      "n": 218,
+      "admitted_pct": 0.9,
+      "short_stay_pct": 75.2,
+      "discharged_pct": 21.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 22.5,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "40_59_F": {
+      "n": 426,
+      "admitted_pct": 1.6,
+      "short_stay_pct": 84.3,
+      "discharged_pct": 11.0,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 12.4,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "60_79_F": {
+      "n": 469,
+      "admitted_pct": 5.3,
+      "short_stay_pct": 81.2,
+      "discharged_pct": 10.0,
+      "mortality_pct": 0.2,
+      "high_acuity_pct": 14.5,
+      "top_dx": [
+        "Low back pain"
+      ]
+    },
+    "80_plus_F": {
+      "n": 239,
+      "admitted_pct": 14.2,
+      "short_stay_pct": 74.1,
+      "discharged_pct": 9.6,
+      "mortality_pct": 0.4,
+      "high_acuity_pct": 22.6,
+      "top_dx": [
+        "Low back pain"
+      ]
+    }
+  },
+  "chest_pain": {
+    "_overall": {
+      "n": 20293,
+      "admitted_pct": 2.4,
+      "short_stay_pct": 82.4,
+      "discharged_pct": 12.8,
+      "mortality_pct": 0.7,
+      "high_acuity_pct": 14.3,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain",
+        "STEMI"
+      ]
+    },
+    "18_39_M": {
+      "n": 939,
+      "admitted_pct": 0.5,
+      "short_stay_pct": 88.3,
+      "discharged_pct": 8.5,
+      "mortality_pct": 0.1,
+      "high_acuity_pct": 8.5,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain",
+        "STEMI"
+      ]
+    },
+    "40_59_M": {
+      "n": 4718,
+      "admitted_pct": 1.3,
+      "short_stay_pct": 82.7,
+      "discharged_pct": 13.7,
+      "mortality_pct": 0.3,
+      "high_acuity_pct": 14.3,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain",
+        "STEMI"
+      ]
+    },
+    "60_79_M": {
+      "n": 3442,
+      "admitted_pct": 3.2,
+      "short_stay_pct": 76.9,
+      "discharged_pct": 17.5,
+      "mortality_pct": 1.3,
+      "high_acuity_pct": 19.7,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain",
+        "STEMI"
+      ]
+    },
+    "80_plus_M": {
+      "n": 697,
+      "admitted_pct": 10.0,
+      "short_stay_pct": 68.6,
+      "discharged_pct": 18.8,
+      "mortality_pct": 5.0,
+      "high_acuity_pct": 26.8,
+      "top_dx": [
+        "Atypical chest pain",
+        "Chest pain",
+        "STEMI"
+      ]
+    },
+    "18_39_F": {
+      "n": 817,
+      "admitted_pct": 0.5,
+      "short_stay_pct": 89.5,
+      "discharged_pct": 7.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 7.2,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain"
+      ]
+    },
+    "40_59_F": {
+      "n": 4442,
+      "admitted_pct": 0.6,
+      "short_stay_pct": 88.4,
+      "discharged_pct": 8.5,
+      "mortality_pct": 0.1,
+      "high_acuity_pct": 8.7,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain"
+      ]
+    },
+    "60_79_F": {
+      "n": 3984,
+      "admitted_pct": 2.4,
+      "short_stay_pct": 82.4,
+      "discharged_pct": 12.9,
+      "mortality_pct": 0.5,
+      "high_acuity_pct": 14.2,
+      "top_dx": [
+        "Chest pain",
+        "Atypical chest pain"
+      ]
+    },
+    "80_plus_F": {
+      "n": 1254,
+      "admitted_pct": 8.4,
+      "short_stay_pct": 74.1,
+      "discharged_pct": 15.2,
+      "mortality_pct": 2.2,
+      "high_acuity_pct": 22.0,
+      "top_dx": [
+        "Atypical chest pain",
+        "Chest pain",
+        "STEMI"
+      ]
+    }
+  },
+  "dizziness": {
+    "_overall": {
+      "n": 1476,
+      "admitted_pct": 1.2,
+      "short_stay_pct": 86.4,
+      "discharged_pct": 9.8,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 10.8,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "18_39_M": {
+      "n": 36,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 94.4,
+      "discharged_pct": 5.6,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 5.6,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "40_59_M": {
+      "n": 209,
+      "admitted_pct": 0.5,
+      "short_stay_pct": 89.5,
+      "discharged_pct": 7.2,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 7.7,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "60_79_M": {
+      "n": 257,
+      "admitted_pct": 0.4,
+      "short_stay_pct": 89.9,
+      "discharged_pct": 7.4,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 7.8,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "80_plus_M": {
+      "n": 105,
+      "admitted_pct": 1.9,
+      "short_stay_pct": 82.9,
+      "discharged_pct": 14.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 16.2,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "18_39_F": {
+      "n": 65,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 92.3,
+      "discharged_pct": 3.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 3.1,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "40_59_F": {
+      "n": 253,
+      "admitted_pct": 0.4,
+      "short_stay_pct": 87.0,
+      "discharged_pct": 10.7,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 10.7,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "60_79_F": {
+      "n": 380,
+      "admitted_pct": 1.8,
+      "short_stay_pct": 82.4,
+      "discharged_pct": 11.6,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 13.2,
+      "top_dx": [
+        "Dizziness"
+      ]
+    },
+    "80_plus_F": {
+      "n": 171,
+      "admitted_pct": 2.9,
+      "short_stay_pct": 83.6,
+      "discharged_pct": 12.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 15.2,
+      "top_dx": [
+        "Dizziness"
+      ]
+    }
+  },
+  "dyspnea": {
+    "_overall": {
+      "n": 6750,
+      "admitted_pct": 9.1,
+      "short_stay_pct": 67.0,
+      "discharged_pct": 22.4,
+      "mortality_pct": 3.2,
+      "high_acuity_pct": 29.5,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    },
+    "18_39_M": {
+      "n": 229,
+      "admitted_pct": 2.2,
+      "short_stay_pct": 72.5,
+      "discharged_pct": 22.7,
+      "mortality_pct": 1.3,
+      "high_acuity_pct": 22.7,
+      "top_dx": [
+        "Pneumonia",
+        "Dyspnea"
+      ]
+    },
+    "40_59_M": {
+      "n": 886,
+      "admitted_pct": 6.7,
+      "short_stay_pct": 67.2,
+      "discharged_pct": 25.4,
+      "mortality_pct": 2.5,
+      "high_acuity_pct": 30.2,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    },
+    "60_79_M": {
+      "n": 1461,
+      "admitted_pct": 10.1,
+      "short_stay_pct": 65.7,
+      "discharged_pct": 22.6,
+      "mortality_pct": 3.7,
+      "high_acuity_pct": 30.4,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    },
+    "80_plus_M": {
+      "n": 403,
+      "admitted_pct": 15.9,
+      "short_stay_pct": 61.3,
+      "discharged_pct": 20.1,
+      "mortality_pct": 6.5,
+      "high_acuity_pct": 33.5,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    },
+    "18_39_F": {
+      "n": 396,
+      "admitted_pct": 3.5,
+      "short_stay_pct": 69.7,
+      "discharged_pct": 25.5,
+      "mortality_pct": 1.5,
+      "high_acuity_pct": 27.8,
+      "top_dx": [
+        "Pneumonia",
+        "Dyspnea"
+      ]
+    },
+    "40_59_F": {
+      "n": 1119,
+      "admitted_pct": 5.1,
+      "short_stay_pct": 67.2,
+      "discharged_pct": 25.8,
+      "mortality_pct": 1.1,
+      "high_acuity_pct": 29.0,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    },
+    "60_79_F": {
+      "n": 1615,
+      "admitted_pct": 10.3,
+      "short_stay_pct": 67.7,
+      "discharged_pct": 20.5,
+      "mortality_pct": 3.7,
+      "high_acuity_pct": 29.0,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    },
+    "80_plus_F": {
+      "n": 641,
+      "admitted_pct": 15.4,
+      "short_stay_pct": 67.1,
+      "discharged_pct": 15.8,
+      "mortality_pct": 5.3,
+      "high_acuity_pct": 29.3,
+      "top_dx": [
+        "Pneumonia",
+        "COPD exacerbation",
+        "Dyspnea"
+      ]
+    }
+  },
+  "fever": {
+    "_overall": {
+      "n": 9149,
+      "admitted_pct": 27.6,
+      "short_stay_pct": 43.4,
+      "discharged_pct": 28.7,
+      "mortality_pct": 10.8,
+      "high_acuity_pct": 52.2,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "18_39_M": {
+      "n": 529,
+      "admitted_pct": 11.2,
+      "short_stay_pct": 49.5,
+      "discharged_pct": 38.9,
+      "mortality_pct": 4.0,
+      "high_acuity_pct": 47.8,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "40_59_M": {
+      "n": 1539,
+      "admitted_pct": 23.5,
+      "short_stay_pct": 45.0,
+      "discharged_pct": 31.2,
+      "mortality_pct": 8.6,
+      "high_acuity_pct": 51.7,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "60_79_M": {
+      "n": 2115,
+      "admitted_pct": 30.6,
+      "short_stay_pct": 41.3,
+      "discharged_pct": 27.9,
+      "mortality_pct": 12.2,
+      "high_acuity_pct": 54.1,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "80_plus_M": {
+      "n": 712,
+      "admitted_pct": 40.7,
+      "short_stay_pct": 40.3,
+      "discharged_pct": 18.8,
+      "mortality_pct": 16.6,
+      "high_acuity_pct": 54.2,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "18_39_F": {
+      "n": 581,
+      "admitted_pct": 7.7,
+      "short_stay_pct": 52.5,
+      "discharged_pct": 39.1,
+      "mortality_pct": 2.8,
+      "high_acuity_pct": 44.2,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "40_59_F": {
+      "n": 1131,
+      "admitted_pct": 18.6,
+      "short_stay_pct": 46.4,
+      "discharged_pct": 34.7,
+      "mortality_pct": 7.3,
+      "high_acuity_pct": 49.8,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "60_79_F": {
+      "n": 1739,
+      "admitted_pct": 33.1,
+      "short_stay_pct": 39.8,
+      "discharged_pct": 26.8,
+      "mortality_pct": 12.7,
+      "high_acuity_pct": 55.6,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    },
+    "80_plus_F": {
+      "n": 803,
+      "admitted_pct": 41.6,
+      "short_stay_pct": 42.0,
+      "discharged_pct": 16.1,
+      "mortality_pct": 17.6,
+      "high_acuity_pct": 51.4,
+      "top_dx": [
+        "Sepsis",
+        "Fever"
+      ]
+    }
+  },
+  "headache": {
+    "_overall": {
+      "n": 1533,
+      "admitted_pct": 0.5,
+      "short_stay_pct": 79.2,
+      "discharged_pct": 17.4,
+      "mortality_pct": 0.1,
+      "high_acuity_pct": 17.1,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "18_39_M": {
+      "n": 136,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 78.7,
+      "discharged_pct": 18.4,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 17.6,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "40_59_M": {
+      "n": 198,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 74.2,
+      "discharged_pct": 23.2,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 21.7,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "60_79_M": {
+      "n": 102,
+      "admitted_pct": 1.0,
+      "short_stay_pct": 72.5,
+      "discharged_pct": 23.5,
+      "mortality_pct": 1.0,
+      "high_acuity_pct": 23.5,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "18_39_F": {
+      "n": 393,
+      "admitted_pct": 0.3,
+      "short_stay_pct": 80.7,
+      "discharged_pct": 14.8,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 14.5,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "40_59_F": {
+      "n": 395,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 82.0,
+      "discharged_pct": 15.7,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 14.9,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "60_79_F": {
+      "n": 226,
+      "admitted_pct": 0.0,
+      "short_stay_pct": 81.9,
+      "discharged_pct": 15.9,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 15.5,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    },
+    "80_plus_F": {
+      "n": 60,
+      "admitted_pct": 6.7,
+      "short_stay_pct": 68.3,
+      "discharged_pct": 21.7,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 26.7,
+      "top_dx": [
+        "Headache",
+        "Migraine with aura"
+      ]
+    }
+  },
+  "nausea_vomiting": {
+    "_overall": {
+      "n": 1686,
+      "admitted_pct": 2.8,
+      "short_stay_pct": 73.4,
+      "discharged_pct": 21.9,
+      "mortality_pct": 0.1,
+      "high_acuity_pct": 24.0,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "18_39_M": {
+      "n": 192,
+      "admitted_pct": 0.5,
+      "short_stay_pct": 81.2,
+      "discharged_pct": 17.7,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 16.7,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "40_59_M": {
+      "n": 231,
+      "admitted_pct": 3.5,
+      "short_stay_pct": 70.1,
+      "discharged_pct": 24.7,
+      "mortality_pct": 0.4,
+      "high_acuity_pct": 28.1,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "60_79_M": {
+      "n": 159,
+      "admitted_pct": 3.8,
+      "short_stay_pct": 68.6,
+      "discharged_pct": 25.2,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 27.7,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "80_plus_M": {
+      "n": 40,
+      "admitted_pct": 5.0,
+      "short_stay_pct": 75.0,
+      "discharged_pct": 17.5,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 22.5,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting"
+      ]
+    },
+    "18_39_F": {
+      "n": 334,
+      "admitted_pct": 1.5,
+      "short_stay_pct": 77.8,
+      "discharged_pct": 18.0,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 19.5,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "40_59_F": {
+      "n": 315,
+      "admitted_pct": 1.0,
+      "short_stay_pct": 69.8,
+      "discharged_pct": 27.6,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 27.9,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "60_79_F": {
+      "n": 304,
+      "admitted_pct": 4.9,
+      "short_stay_pct": 70.7,
+      "discharged_pct": 22.7,
+      "mortality_pct": 0.3,
+      "high_acuity_pct": 26.6,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    },
+    "80_plus_F": {
+      "n": 111,
+      "admitted_pct": 7.2,
+      "short_stay_pct": 77.5,
+      "discharged_pct": 13.5,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 18.9,
+      "top_dx": [
+        "Nausea/vomiting",
+        "Nausea and vomiting",
+        "Nausea"
+      ]
+    }
+  },
+  "psychiatric": {
+    "_overall": {
+      "n": 26976,
+      "admitted_pct": 1.9,
+      "short_stay_pct": 78.0,
+      "discharged_pct": 17.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 12.7,
+      "top_dx": [
+        "Depression"
+      ]
+    },
+    "18_39_M": {
+      "n": 7914,
+      "admitted_pct": 0.9,
+      "short_stay_pct": 80.9,
+      "discharged_pct": 15.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 10.3,
+      "top_dx": [
+        "Depression",
+        "Schizophrenia"
+      ]
+    },
+    "40_59_M": {
+      "n": 5863,
+      "admitted_pct": 1.7,
+      "short_stay_pct": 81.2,
+      "discharged_pct": 13.9,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 10.8,
+      "top_dx": [
+        "Depression"
+      ]
+    },
+    "60_79_M": {
+      "n": 1214,
+      "admitted_pct": 5.8,
+      "short_stay_pct": 76.3,
+      "discharged_pct": 16.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 16.8,
+      "top_dx": [
+        "Depression",
+        "Anxiety"
+      ]
+    },
+    "80_plus_M": {
+      "n": 116,
+      "admitted_pct": 12.1,
+      "short_stay_pct": 71.6,
+      "discharged_pct": 14.7,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 22.4,
+      "top_dx": [
+        "Depression"
+      ]
+    },
+    "18_39_F": {
+      "n": 7014,
+      "admitted_pct": 1.0,
+      "short_stay_pct": 77.7,
+      "discharged_pct": 18.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 12.0,
+      "top_dx": [
+        "Depression",
+        "Anxiety"
+      ]
+    },
+    "40_59_F": {
+      "n": 3488,
+      "admitted_pct": 2.5,
+      "short_stay_pct": 71.1,
+      "discharged_pct": 24.2,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 17.7,
+      "top_dx": [
+        "Depression"
+      ]
+    },
+    "60_79_F": {
+      "n": 1148,
+      "admitted_pct": 6.7,
+      "short_stay_pct": 68.6,
+      "discharged_pct": 21.3,
+      "mortality_pct": 0.1,
+      "high_acuity_pct": 20.3,
+      "top_dx": [
+        "Depression",
+        "Anxiety"
+      ]
+    },
+    "80_plus_F": {
+      "n": 219,
+      "admitted_pct": 13.7,
+      "short_stay_pct": 74.4,
+      "discharged_pct": 5.5,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 16.4,
+      "top_dx": [
+        "Depression",
+        "Anxiety"
+      ]
+    }
+  },
+  "stroke": {
+    "_overall": {
+      "n": 6638,
+      "admitted_pct": 30.9,
+      "short_stay_pct": 38.2,
+      "discharged_pct": 30.1,
+      "mortality_pct": 5.3,
+      "high_acuity_pct": 58.1,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    },
+    "18_39_M": {
+      "n": 122,
+      "admitted_pct": 18.9,
+      "short_stay_pct": 38.5,
+      "discharged_pct": 41.0,
+      "mortality_pct": 2.5,
+      "high_acuity_pct": 56.6,
+      "top_dx": [
+        "TIA",
+        "Ischaemic stroke"
+      ]
+    },
+    "40_59_M": {
+      "n": 856,
+      "admitted_pct": 19.3,
+      "short_stay_pct": 41.6,
+      "discharged_pct": 38.1,
+      "mortality_pct": 2.0,
+      "high_acuity_pct": 55.1,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    },
+    "60_79_M": {
+      "n": 1638,
+      "admitted_pct": 26.7,
+      "short_stay_pct": 40.1,
+      "discharged_pct": 32.2,
+      "mortality_pct": 4.4,
+      "high_acuity_pct": 55.3,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    },
+    "80_plus_M": {
+      "n": 650,
+      "admitted_pct": 45.8,
+      "short_stay_pct": 30.3,
+      "discharged_pct": 23.4,
+      "mortality_pct": 11.2,
+      "high_acuity_pct": 66.6,
+      "top_dx": [
+        "TIA",
+        "Ischaemic stroke"
+      ]
+    },
+    "18_39_F": {
+      "n": 129,
+      "admitted_pct": 13.2,
+      "short_stay_pct": 45.7,
+      "discharged_pct": 41.1,
+      "mortality_pct": 0.8,
+      "high_acuity_pct": 46.5,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    },
+    "40_59_F": {
+      "n": 617,
+      "admitted_pct": 17.8,
+      "short_stay_pct": 45.7,
+      "discharged_pct": 35.3,
+      "mortality_pct": 1.8,
+      "high_acuity_pct": 49.9,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    },
+    "60_79_F": {
+      "n": 1467,
+      "admitted_pct": 28.1,
+      "short_stay_pct": 40.9,
+      "discharged_pct": 30.6,
+      "mortality_pct": 4.5,
+      "high_acuity_pct": 56.6,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    },
+    "80_plus_F": {
+      "n": 1159,
+      "admitted_pct": 51.1,
+      "short_stay_pct": 29.2,
+      "discharged_pct": 19.2,
+      "mortality_pct": 9.4,
+      "high_acuity_pct": 67.3,
+      "top_dx": [
+        "Ischaemic stroke",
+        "TIA"
+      ]
+    }
+  },
+  "syncope": {
+    "_overall": {
+      "n": 4168,
+      "admitted_pct": 5.3,
+      "short_stay_pct": 68.6,
+      "discharged_pct": 23.7,
+      "mortality_pct": 0.1,
+      "high_acuity_pct": 28.4,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "18_39_M": {
+      "n": 205,
+      "admitted_pct": 2.0,
+      "short_stay_pct": 77.1,
+      "discharged_pct": 19.0,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 21.0,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "40_59_M": {
+      "n": 527,
+      "admitted_pct": 2.3,
+      "short_stay_pct": 74.2,
+      "discharged_pct": 21.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 23.0,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "60_79_M": {
+      "n": 892,
+      "admitted_pct": 3.6,
+      "short_stay_pct": 66.5,
+      "discharged_pct": 27.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 30.0,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "80_plus_M": {
+      "n": 364,
+      "admitted_pct": 14.0,
+      "short_stay_pct": 53.0,
+      "discharged_pct": 31.6,
+      "mortality_pct": 0.3,
+      "high_acuity_pct": 45.3,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "18_39_F": {
+      "n": 302,
+      "admitted_pct": 2.0,
+      "short_stay_pct": 77.2,
+      "discharged_pct": 17.9,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 18.5,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "40_59_F": {
+      "n": 467,
+      "admitted_pct": 2.8,
+      "short_stay_pct": 74.7,
+      "discharged_pct": 20.1,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 22.5,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "60_79_F": {
+      "n": 836,
+      "admitted_pct": 3.0,
+      "short_stay_pct": 72.7,
+      "discharged_pct": 21.8,
+      "mortality_pct": 0.2,
+      "high_acuity_pct": 24.3,
+      "top_dx": [
+        "Syncope"
+      ]
+    },
+    "80_plus_F": {
+      "n": 575,
+      "admitted_pct": 13.4,
+      "short_stay_pct": 58.1,
+      "discharged_pct": 26.3,
+      "mortality_pct": 0.2,
+      "high_acuity_pct": 38.8,
+      "top_dx": [
+        "Syncope"
+      ]
+    }
+  },
+  "trauma": {
+    "_overall": {
+      "n": 41769,
+      "admitted_pct": 22.8,
+      "short_stay_pct": 50.8,
+      "discharged_pct": 24.1,
+      "mortality_pct": 2.4,
+      "high_acuity_pct": 44.0,
+      "top_dx": []
+    },
+    "18_39_M": {
+      "n": 5698,
+      "admitted_pct": 9.9,
+      "short_stay_pct": 47.8,
+      "discharged_pct": 40.1,
+      "mortality_pct": 1.1,
+      "high_acuity_pct": 47.3,
+      "top_dx": []
+    },
+    "40_59_M": {
+      "n": 6441,
+      "admitted_pct": 13.1,
+      "short_stay_pct": 52.6,
+      "discharged_pct": 31.9,
+      "mortality_pct": 1.5,
+      "high_acuity_pct": 42.7,
+      "top_dx": []
+    },
+    "60_79_M": {
+      "n": 6377,
+      "admitted_pct": 23.1,
+      "short_stay_pct": 52.3,
+      "discharged_pct": 22.4,
+      "mortality_pct": 2.9,
+      "high_acuity_pct": 42.7,
+      "top_dx": []
+    },
+    "80_plus_M": {
+      "n": 3115,
+      "admitted_pct": 42.5,
+      "short_stay_pct": 43.1,
+      "discharged_pct": 12.1,
+      "mortality_pct": 6.4,
+      "high_acuity_pct": 50.9,
+      "top_dx": []
+    },
+    "18_39_F": {
+      "n": 3092,
+      "admitted_pct": 9.2,
+      "short_stay_pct": 58.1,
+      "discharged_pct": 30.3,
+      "mortality_pct": 1.0,
+      "high_acuity_pct": 37.3,
+      "top_dx": []
+    },
+    "40_59_F": {
+      "n": 4135,
+      "admitted_pct": 13.3,
+      "short_stay_pct": 55.6,
+      "discharged_pct": 29.0,
+      "mortality_pct": 1.5,
+      "high_acuity_pct": 40.2,
+      "top_dx": []
+    },
+    "60_79_F": {
+      "n": 6763,
+      "admitted_pct": 26.8,
+      "short_stay_pct": 53.2,
+      "discharged_pct": 18.1,
+      "mortality_pct": 1.9,
+      "high_acuity_pct": 41.7,
+      "top_dx": []
+    },
+    "80_plus_F": {
+      "n": 6148,
+      "admitted_pct": 43.5,
+      "short_stay_pct": 44.8,
+      "discharged_pct": 9.4,
+      "mortality_pct": 3.6,
+      "high_acuity_pct": 49.0,
+      "top_dx": []
+    }
+  },
+  "uti": {
+    "_overall": {
+      "n": 4917,
+      "admitted_pct": 23.1,
+      "short_stay_pct": 43.5,
+      "discharged_pct": 32.2,
+      "mortality_pct": 0.4,
+      "high_acuity_pct": 53.4,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "18_39_M": {
+      "n": 74,
+      "admitted_pct": 10.8,
+      "short_stay_pct": 44.6,
+      "discharged_pct": 43.2,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 50.0,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "40_59_M": {
+      "n": 292,
+      "admitted_pct": 15.8,
+      "short_stay_pct": 46.2,
+      "discharged_pct": 37.3,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 50.3,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "60_79_M": {
+      "n": 775,
+      "admitted_pct": 18.1,
+      "short_stay_pct": 45.5,
+      "discharged_pct": 35.4,
+      "mortality_pct": 0.5,
+      "high_acuity_pct": 52.0,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "80_plus_M": {
+      "n": 453,
+      "admitted_pct": 38.6,
+      "short_stay_pct": 32.0,
+      "discharged_pct": 28.5,
+      "mortality_pct": 0.7,
+      "high_acuity_pct": 64.5,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "18_39_F": {
+      "n": 221,
+      "admitted_pct": 5.9,
+      "short_stay_pct": 62.9,
+      "discharged_pct": 29.9,
+      "mortality_pct": 0.0,
+      "high_acuity_pct": 34.8,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "40_59_F": {
+      "n": 562,
+      "admitted_pct": 8.5,
+      "short_stay_pct": 48.0,
+      "discharged_pct": 41.3,
+      "mortality_pct": 0.4,
+      "high_acuity_pct": 49.3,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "60_79_F": {
+      "n": 1261,
+      "admitted_pct": 21.9,
+      "short_stay_pct": 46.7,
+      "discharged_pct": 30.1,
+      "mortality_pct": 0.5,
+      "high_acuity_pct": 50.0,
+      "top_dx": [
+        "UTI"
+      ]
+    },
+    "80_plus_F": {
+      "n": 1279,
+      "admitted_pct": 33.7,
+      "short_stay_pct": 37.2,
+      "discharged_pct": 28.3,
+      "mortality_pct": 0.5,
+      "high_acuity_pct": 59.7,
+      "top_dx": [
+        "UTI"
+      ]
+    }
+  }
+}

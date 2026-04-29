@@ -1,11 +1,101 @@
 import type { AgentState } from '../lib/types';
-import { CheckCircle2, Clock, Loader2, Circle } from 'lucide-react';
+import type { PatientInput } from '../lib/types';
+import { CheckCircle2, Clock, Loader2, Circle, Database } from 'lucide-react';
+import evidenceData from '../lib/evidence.json';
 
 interface Props {
   agents: AgentState[];
   step: number;
   running: boolean;
+  patient: PatientInput | null;
 }
+
+// ---------------------------------------------------------------------------
+// Evidence lookup
+// ---------------------------------------------------------------------------
+
+const COMPLAINT_KEYWORDS: Record<string, string[]> = {
+  chest_pain:           ['chest pain', 'chest pressure', 'chest tightness', 'chest discomfort', 'chest', 'angina', 'acs', 'cardiac arrest'],
+  dyspnea:              ['shortness of breath', 'sob', 'difficulty breathing', 'breathless', 'dyspnea', 'respiratory distress'],
+  abdominal_pain:       ['abdominal pain', 'stomach pain', 'belly pain', 'abdo pain', 'epigastric', 'abdominal'],
+  headache:             ['headache', 'head pain', 'migraine', 'cephalalgia'],
+  syncope:              ['syncope', 'faint', 'loss of consciousness', 'blackout', 'collapsed'],
+  dizziness:            ['dizzy', 'dizziness', 'vertigo'],
+  altered_mental_status:['confusion', 'confused', 'altered mental', 'ams', 'disoriented', 'delirium'],
+  fever:                ['fever', 'febrile', 'high temperature', 'pyrexia', 'sepsis', 'sore throat', 'runny nose'],
+  back_pain:            ['back pain', 'lower back', 'lumbar', 'lumbago'],
+  nausea_vomiting:      ['nausea', 'vomiting', 'vomit'],
+  stroke:               ['stroke', 'slurred speech', 'facial droop', 'tia', 'arm weakness', 'facial weakness'],
+  uti:                  ['uti', 'urinary', 'dysuria', 'burning urination'],
+  trauma:               ['trauma', 'injury', 'fall', 'mvc', 'motor vehicle', 'laceration', 'fracture', 'wound'],
+  psychiatric:          ['psychiatric', 'anxiety', 'depression', 'suicidal', 'mental health', 'overdose'],
+};
+
+function matchComplaint(text: string): string | null {
+  const lower = text.toLowerCase();
+  for (const [cat, keywords] of Object.entries(COMPLAINT_KEYWORDS)) {
+    if (keywords.some(kw => lower.includes(kw))) return cat;
+  }
+  return null;
+}
+
+function getAgeGroup(age: number): string {
+  if (age < 18) return '0_17';
+  if (age < 40) return '18_39';
+  if (age < 60) return '40_59';
+  if (age < 80) return '60_79';
+  return '80_plus';
+}
+
+type EvidenceStats = {
+  n: number;
+  admitted_pct: number;
+  short_stay_pct: number;
+  discharged_pct: number;
+  mortality_pct: number;
+  high_acuity_pct: number;
+  top_dx: string[];
+};
+
+function lookupEvidence(patient: PatientInput | null): EvidenceStats | null {
+  if (!patient) return null;
+  const cat = matchComplaint(patient.chiefComplaint);
+  if (!cat) return null;
+  const db = evidenceData as Record<string, Record<string, EvidenceStats>>;
+  const catData = db[cat];
+  if (!catData) return null;
+  const key = `${getAgeGroup(patient.age)}_${patient.sex}`;
+  return catData[key] ?? catData['_overall'] ?? null;
+}
+
+// ---------------------------------------------------------------------------
+// What each agent's evidence strip shows
+// ---------------------------------------------------------------------------
+
+function getEvidenceText(agentId: string, ev: EvidenceStats): string {
+  const n = ev.n.toLocaleString();
+  const keptPct = Math.round(ev.admitted_pct + ev.short_stay_pct);
+  switch (agentId) {
+    case 'patientAgent':
+      return `${n} real ED cases matched this demographic profile in MIMIC-IV`;
+    case 'triageAgent':
+      return `${ev.high_acuity_pct}% of similar MIMIC-IV cases arrived as emergency presentations`;
+    case 'nurseAgent':
+      return `${keptPct}% of similar MIMIC-IV cases required hospital admission or observation`;
+    case 'doctorAgent':
+      return ev.top_dx.length > 0
+        ? `Top MIMIC-IV diagnoses: ${ev.top_dx[0]}${ev.top_dx[1] ? ` · ${ev.top_dx[1]}` : ''}`
+        : `Based on ${n} MIMIC-IV cases with this presentation`;
+    case 'decisionAgent':
+      return `MIMIC-IV: ${ev.discharged_pct}% discharged home · ${keptPct}% required hospital/obs stay`;
+    default:
+      return `Based on ${n} real MIMIC-IV ED cases`;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
 
 const AGENT_ACCENT: Record<string, { color: string; bg: string; border: string }> = {
   patientAgent:  { color: '#60a5fa', bg: 'rgba(59,130,246,0.1)',  border: '#3b82f6' },
@@ -39,8 +129,13 @@ function StatusIcon({ status }: { status: AgentState['status'] }) {
   return <Circle size={16} color="#334155" />;
 }
 
-export default function PipelinePanel({ agents, step, running }: Props) {
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
+
+export default function PipelinePanel({ agents, step, running, patient }: Props) {
   const done = agents.filter(a => a.status === 'done').length;
+  const evidence = lookupEvidence(patient);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#0a0d14' }}>
@@ -69,7 +164,7 @@ export default function PipelinePanel({ agents, step, running }: Props) {
       {/* Agent Cards */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
         {agents.map((agent, idx) => {
-          const accent = AGENT_ACCENT[agent.id] ?? AGENT_ACCENT.patientAgent;
+          const accent  = AGENT_ACCENT[agent.id] ?? AGENT_ACCENT.patientAgent;
           const isActive = agent.status === 'active';
           const isDone   = agent.status === 'done';
 
@@ -119,6 +214,7 @@ export default function PipelinePanel({ agents, step, running }: Props) {
                   <StatusBadge status={agent.status} />
                 </div>
 
+                {/* Thinking bubble (active) */}
                 {isActive && agent.thinkingText && (
                   <div style={{
                     marginTop: 12,
@@ -132,6 +228,25 @@ export default function PipelinePanel({ agents, step, running }: Props) {
                   }}>
                     <Loader2 size={11} color={accent.color} style={{ animation: 'spin 1s linear infinite', flexShrink: 0 }} />
                     <span style={{ fontSize: 12, color: accent.color, fontStyle: 'italic' }}>{agent.thinkingText}</span>
+                  </div>
+                )}
+
+                {/* Evidence strip (done + evidence available) */}
+                {isDone && evidence && (
+                  <div style={{
+                    marginTop: 10,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 7,
+                    background: `${accent.border}12`,
+                    border: `1px solid ${accent.border}30`,
+                    borderRadius: 8,
+                    padding: '7px 10px',
+                  }}>
+                    <Database size={11} color={accent.color} style={{ flexShrink: 0, marginTop: 1 }} />
+                    <span style={{ fontSize: 11, color: accent.color, lineHeight: 1.5 }}>
+                      {getEvidenceText(agent.id, evidence)}
+                    </span>
                   </div>
                 )}
               </div>

@@ -169,7 +169,7 @@ export default function Dashboard() {
       </div>
 
       <div style={{ flex: 1, minWidth: 0, borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column' }}>
-        {activeView === 'pipeline'    && <PipelinePanel agents={agents} step={step} running={running} />}
+        {activeView === 'pipeline'    && <PipelinePanel agents={agents} step={step} running={running} patient={patient} />}
         {activeView === 'patientFlow' && <PatientFlowPanel agentOutput={agentOutput} patient={patient} />}
         {activeView === 'analytics'   && <AnalyticsPanel />}
         {activeView === 'settings'    && <SettingsPanel />}

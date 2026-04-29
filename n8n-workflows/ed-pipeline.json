@@ -39,7 +39,7 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY" },
+            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
@@ -84,7 +84,7 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY" },
+            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
@@ -129,7 +129,7 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY" },
+            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
@@ -174,7 +174,7 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY" },
+            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },
@@ -219,7 +219,7 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY" },
+            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
             { "name": "Content-Type", "value": "application/json" }
           ]
         },

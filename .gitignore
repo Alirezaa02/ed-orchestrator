@@ -2,3 +2,9 @@ node_modules/
 dist/
 .env
 *.local
+
+# MIMIC-IV raw data — too large and requires data use agreement
+data files/
+
+# Claude Code local settings
+.claude/
