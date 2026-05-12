@@ -5,6 +5,8 @@ dist/
 
 # MIMIC-IV raw data — too large and requires data use agreement
 data files/
+*.csv
+*.csv.gz
 
 # Claude Code local settings
 .claude/

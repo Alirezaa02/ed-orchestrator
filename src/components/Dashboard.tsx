@@ -11,7 +11,7 @@ import SettingsPanel from './SettingsPanel';
 import NewSimulationModal from './NewSimulationModal';
 
 const AGENT_DEFS: AgentState[] = [
-  { id: 'patientAgent',  name: 'Patient Agent',  role: 'Demographics & complaint collection', status: 'waiting' },
+  { id: 'patientAgent',  name: 'Register Agent', role: 'Patient registration & clinical summarisation', status: 'waiting' },
   { id: 'triageAgent',   name: 'Triage Agent',   role: 'ATS category assignment',             status: 'waiting' },
   { id: 'nurseAgent',    name: 'Nurse Agent',     role: 'Vitals, orders & labs',               status: 'waiting' },
   { id: 'doctorAgent',   name: 'Doctor Agent',    role: 'Labs review & clinical reasoning',    status: 'waiting' },

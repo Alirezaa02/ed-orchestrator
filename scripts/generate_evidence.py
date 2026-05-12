@@ -4,9 +4,9 @@ import os
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ADM_PATH = os.path.join(BASE, "data files", "admissions.csv", "admissions.csv")
-DX_PATH  = os.path.join(BASE, "data files", "diagnoses_icd.csv", "diagnoses_icd.csv")
-PAT_PATH = os.path.join(BASE, "data files", "patients.csv", "patients.csv")
+ADM_PATH = os.path.join(BASE, "admissions.csv.gz")
+DX_PATH  = os.path.join(BASE, "diagnoses_icd.csv.gz")
+PAT_PATH = os.path.join(BASE, "patients.csv.gz")
 OUT_PATH = os.path.join(BASE, "src", "lib", "evidence.json")
 
 print("Loading files...")
@@ -29,6 +29,7 @@ def map_complaint(row):
     code = str(row.get('icd_code', '')).upper().strip().replace('.', '')
     ver  = row.get('icd_version', 0)
     if ver == 9:
+        if code.startswith(('320', '321', '322', '323')): return 'meningism'
         if code.startswith('7865'):                      return 'chest_pain'
         if code.startswith('7860'):                      return 'dyspnea'
         if code.startswith('7890'):                      return 'abdominal_pain'
@@ -48,6 +49,7 @@ def map_complaint(row):
         except ValueError:
             pass
     else:
+        if code.startswith(('G00', 'G01', 'G02', 'G03', 'G04')): return 'meningism'
         if code.startswith('R07'):                        return 'chest_pain'
         if code.startswith(('I20', 'I21', 'I22')):        return 'chest_pain'
         if code.startswith('R06'):                        return 'dyspnea'
@@ -114,6 +116,10 @@ ICD_DESC = {
     'I6350': 'Ischaemic stroke', 'G459':  'TIA', 'I639':  'Ischaemic stroke',
     'N390':  'UTI', 'N300':  'Cystitis',
     'F329':  'Depression', 'F419':  'Anxiety', 'F209':  'Schizophrenia',
+    # Meningism
+    'G009':  'Bacterial meningitis', 'G03':   'Meningitis', 'G039':  'Meningitis unspecified',
+    'G019':  'Meningitis in bacterial disease', 'G049':  'Encephalitis',
+    '3209':  'Bacterial meningitis', '3221':  'Meningitis unspecified', '3230':  'Viral encephalitis',
     # ICD-9 common
     '7865':  'Chest pain', '78650': 'Chest pain', '78659': 'Atypical chest pain',
     '7860':  'Dyspnea',    '7890':  'Abdominal pain',
@@ -130,6 +136,21 @@ def readable_dx(code):
             return v
     return None  # skip unknowns
 
+# ICD prefixes that indicate a life-threatening / serious diagnosis
+SERIOUS_PREFIXES = (
+    'I21', 'I22',        # STEMI / NSTEMI
+    'I20',               # Unstable angina
+    'I63', 'I64',        # Stroke
+    'A41',               # Sepsis
+    'J96',               # Respiratory failure
+    'G00', 'G01',        # Bacterial meningitis
+    'K35',               # Appendicitis
+    'I26',               # Pulmonary embolism
+    'N17',               # Acute kidney injury
+    '410', '431', '434', # ICD-9 MI, stroke
+    '038',               # ICD-9 sepsis
+)
+
 # Compute stats for a dataframe slice
 def stats(df):
     n = len(df)
@@ -141,6 +162,10 @@ def stats(df):
     disc  = (disp == 'discharge').sum()
     mort  = df['hospital_expire_flag'].fillna(0).astype(int).sum()
     urgent = df['admission_type'].isin(['EW EMER.', 'DIRECT EMER.']).sum()
+
+    # Serious diagnosis count
+    codes = df['icd_code'].fillna('').astype(str).str.upper().str.replace('.', '', regex=False)
+    serious = codes.apply(lambda c: any(c.startswith(p) for p in SERIOUS_PREFIXES)).sum()
 
     # Top readable diagnoses
     top_codes = df['icd_code'].value_counts().head(10).index.tolist()
@@ -155,13 +180,14 @@ def stats(df):
             break
 
     return {
-        'n':              int(n),
-        'admitted_pct':   round(admit   / n * 100, 1),
-        'short_stay_pct': round(ss      / n * 100, 1),
-        'discharged_pct': round(disc    / n * 100, 1),
-        'mortality_pct':  round(mort    / n * 100, 1),
-        'high_acuity_pct':round(urgent  / n * 100, 1),
-        'top_dx':         top_dx,
+        'n':                int(n),
+        'admitted_pct':     round(admit   / n * 100, 1),
+        'short_stay_pct':   round(ss      / n * 100, 1),
+        'discharged_pct':   round(disc    / n * 100, 1),
+        'mortality_pct':    round(mort    / n * 100, 1),
+        'high_acuity_pct':  round(urgent  / n * 100, 1),
+        'serious_dx_pct':   round(serious / n * 100, 1),
+        'top_dx':           top_dx,
     }
 
 # Build evidence dict

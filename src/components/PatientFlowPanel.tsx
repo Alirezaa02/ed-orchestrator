@@ -7,7 +7,7 @@ interface Props {
 }
 
 const AGENTS = [
-  { id: 'patientAgent'  as const, name: 'Patient Agent',  color: '#60a5fa', bg: 'rgba(59,130,246,0.08)',  border: '#3b82f6' },
+  { id: 'patientAgent'  as const, name: 'Register Agent', color: '#60a5fa', bg: 'rgba(59,130,246,0.08)',  border: '#3b82f6' },
   { id: 'triageAgent'   as const, name: 'Triage Agent',   color: '#c084fc', bg: 'rgba(168,85,247,0.08)', border: '#a855f7' },
   { id: 'nurseAgent'    as const, name: 'Nurse Agent',    color: '#4ade80', bg: 'rgba(34,197,94,0.08)',  border: '#22c55e' },
   { id: 'doctorAgent'   as const, name: 'Doctor Agent',   color: '#fbbf24', bg: 'rgba(245,158,11,0.08)', border: '#f59e0b' },

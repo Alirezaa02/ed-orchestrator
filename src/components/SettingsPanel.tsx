@@ -78,7 +78,7 @@ export default function SettingsPanel() {
             {[
               { label: 'Provider', value: 'Groq' },
               { label: 'Model',    value: 'llama-3.3-70b-versatile' },
-              { label: 'Agents',   value: '5 (Patient → Triage → Nurse → Doctor → Decision)' },
+              { label: 'Agents',   value: '5 (Register → Triage → Nurse → Doctor → Decision)' },
               { label: 'Rate Limit', value: '30 RPM / 14,400 RPD (free tier)' },
             ].map(({ label, value }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #0f1520' }}>
