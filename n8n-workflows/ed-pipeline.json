@@ -6,7 +6,10 @@
       "name": "ED Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [0, 300],
+      "position": [
+        0,
+        300
+      ],
       "parameters": {
         "path": "ed-simulate",
         "httpMethod": "POST",
@@ -19,9 +22,12 @@
       "name": "Build Patient Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [220, 300],
+      "position": [
+        220,
+        300
+      ],
       "parameters": {
-        "jsCode": "const b = items[0].json.body;\nconst prompt = `You are a Patient Registration Agent in an Emergency Department.\\nPatient: ${b.name}, Age ${b.age}${b.sex}, arrived by ${b.arrivalMode}.\\nChief Complaint: ${b.chiefComplaint}\\nPMHx: ${b.pmhx} | Meds: ${b.meds} | Allergies: ${b.allergies}\\nRespond in JSON only (no markdown fences):\\n{\"summary\":\"one sentence overview\",\"demographics\":\"formatted string\",\"complaint\":\"clinical language\"}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input: b, groqBody } }];"
+        "jsCode": "const b = items[0].json.body;\nconst prompt = `You are a Patient Registration Agent in an Emergency Department.\\nPatient: ${b.name}, Age ${b.age}${b.sex}, arrived by ${b.arrivalMode}.\\nChief Complaint: ${b.chiefComplaint}\\nPMHx: ${b.pmhx} | Meds: ${b.meds} | Allergies: ${b.allergies}\\nRespond in JSON only (no markdown fences):\\n{\"summary\":\"one sentence overview\",\"demographics\":\"formatted string\",\"complaint\":\"clinical language\"}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.1-8b-instant', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input: b, groqBody } }];"
       }
     },
     {
@@ -29,7 +35,10 @@
       "name": "Patient Agent",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [440, 300],
+      "position": [
+        440,
+        300
+      ],
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 10000,
@@ -39,8 +48,14 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY_HERE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
@@ -54,7 +69,10 @@
       "name": "Parse Patient",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [660, 300],
+      "position": [
+        660,
+        300
+      ],
       "parameters": {
         "jsCode": "const raw = items[0].json.choices[0].message.content.trim()\n  .replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'').trim();\nconst patientAgent = JSON.parse(raw);\nconst _input = $('Build Patient Payload').first().json._input;\nreturn [{ json: { _input, patientAgent } }];"
       }
@@ -64,7 +82,10 @@
       "name": "Build Triage Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [880, 300],
+      "position": [
+        880,
+        300
+      ],
       "parameters": {
         "jsCode": "const { _input, patientAgent } = items[0].json;\nconst prompt = `You are an ED Triage Nurse using the Australian Triage Scale.\\nPatient: ${patientAgent.summary}\\nComplaint: ${patientAgent.complaint}\\nVitals: HR ${_input.hr}, RR ${_input.rr}, BP ${_input.sbp}/${_input.dbp}, Temp ${_input.temp}C, SpO2 ${_input.spo2}%\\nPMHx: ${_input.pmhx}\\nATS: 1=Resuscitation 2=Emergency 3=Urgent 4=Semi-urgent 5=Non-urgent\\nRespond in JSON only (no markdown fences):\\n{\"category\":2,\"categoryName\":\"Emergency\",\"reasoning\":\"2 sentences\",\"keySymptoms\":[\"s1\",\"s2\"]}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, groqBody } }];"
       }
@@ -74,7 +95,10 @@
       "name": "Triage Agent",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [1100, 300],
+      "position": [
+        1100,
+        300
+      ],
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 10000,
@@ -84,8 +108,14 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY_HERE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
@@ -99,7 +129,10 @@
       "name": "Parse Triage",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1320, 300],
+      "position": [
+        1320,
+        300
+      ],
       "parameters": {
         "jsCode": "const raw = items[0].json.choices[0].message.content.trim()\n  .replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'').trim();\nconst triageAgent = JSON.parse(raw);\nconst prev = $('Build Triage Payload').first().json;\nreturn [{ json: { _input: prev._input, patientAgent: prev.patientAgent, triageAgent } }];"
       }
@@ -109,9 +142,12 @@
       "name": "Build Nurse Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1540, 300],
+      "position": [
+        1540,
+        300
+      ],
       "parameters": {
-        "jsCode": "const { _input, patientAgent, triageAgent } = items[0].json;\nconst prompt = `You are a Triage Nurse recording vitals and orders.\\nPatient: ${patientAgent.summary}\\nTriage: CAT ${triageAgent.category} — ${triageAgent.categoryName}\\nVitals: HR ${_input.hr}, RR ${_input.rr}, BP ${_input.sbp}/${_input.dbp}, Temp ${_input.temp}C, SpO2 ${_input.spo2}%\\nFlag abnormal vitals (HR>100/<60, RR>20/<12, SBP>160/<100, Temp>38/<36, SpO2<95).\\nRespond in JSON only (no markdown fences):\\n{\"vitalsAssessment\":\"1-2 sentences\",\"abnormalFlags\":[\"flag1\"],\"ordersPlaced\":[\"order1\"],\"labsOrdered\":[\"lab1\"]}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, triageAgent, groqBody } }];"
+        "jsCode": "const { _input, patientAgent, triageAgent } = items[0].json;\nconst prompt = `You are a Triage Nurse recording vitals and orders.\\nPatient: ${patientAgent.summary}\\nTriage: CAT ${triageAgent.category} \u2014 ${triageAgent.categoryName}\\nVitals: HR ${_input.hr}, RR ${_input.rr}, BP ${_input.sbp}/${_input.dbp}, Temp ${_input.temp}C, SpO2 ${_input.spo2}%\\nFlag abnormal vitals (HR>100/<60, RR>20/<12, SBP>160/<100, Temp>38/<36, SpO2<95).\\nRespond in JSON only (no markdown fences):\\n{\"vitalsAssessment\":\"1-2 sentences\",\"abnormalFlags\":[\"flag1\"],\"ordersPlaced\":[\"order1\"],\"labsOrdered\":[\"lab1\"]}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, triageAgent, groqBody } }];"
       }
     },
     {
@@ -119,7 +155,10 @@
       "name": "Nurse Agent",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [1760, 300],
+      "position": [
+        1760,
+        300
+      ],
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 10000,
@@ -129,8 +168,14 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY_HERE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
@@ -144,7 +189,10 @@
       "name": "Parse Nurse",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1980, 300],
+      "position": [
+        1980,
+        300
+      ],
       "parameters": {
         "jsCode": "const raw = items[0].json.choices[0].message.content.trim()\n  .replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'').trim();\nconst nurseAgent = JSON.parse(raw);\nconst prev = $('Build Nurse Payload').first().json;\nreturn [{ json: { _input: prev._input, patientAgent: prev.patientAgent, triageAgent: prev.triageAgent, nurseAgent } }];"
       }
@@ -154,9 +202,12 @@
       "name": "Build Doctor Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [2200, 300],
+      "position": [
+        2200,
+        300
+      ],
       "parameters": {
-        "jsCode": "const { _input, patientAgent, triageAgent, nurseAgent } = items[0].json;\nconst flags = (nurseAgent.abnormalFlags||[]).join(', ')||'none';\nconst labs = (nurseAgent.labsOrdered||[]).join(', ')||'none';\nconst prompt = `You are an ED Doctor.\\nPatient: ${patientAgent.summary}\\nTriage: CAT ${triageAgent.category} — ${triageAgent.reasoning}\\nNursing: ${nurseAgent.vitalsAssessment}\\nAbnormal flags: ${flags}\\nLabs ordered: ${labs}\\nComplaint: ${patientAgent.complaint} | PMHx: ${_input.pmhx} | Meds: ${_input.meds} | Allergies: ${_input.allergies}\\nRespond in JSON only (no markdown fences):\\n{\"clinicalPicture\":\"2-3 sentences\",\"differentialDiagnosis\":[\"primary\",\"2nd\",\"3rd\"],\"reasoning\":\"2 sentences\"}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, triageAgent, nurseAgent, groqBody } }];"
+        "jsCode": "const { _input, patientAgent, triageAgent, nurseAgent } = items[0].json;\nconst flags = (nurseAgent.abnormalFlags||[]).join(', ')||'none';\nconst labs = (nurseAgent.labsOrdered||[]).join(', ')||'none';\nconst prompt = `You are an ED Doctor.\\nPatient: ${patientAgent.summary}\\nTriage: CAT ${triageAgent.category} \u2014 ${triageAgent.reasoning}\\nNursing: ${nurseAgent.vitalsAssessment}\\nAbnormal flags: ${flags}\\nLabs ordered: ${labs}\\nComplaint: ${patientAgent.complaint} | PMHx: ${_input.pmhx} | Meds: ${_input.meds} | Allergies: ${_input.allergies}\\nRespond in JSON only (no markdown fences):\\n{\"clinicalPicture\":\"2-3 sentences\",\"differentialDiagnosis\":[\"primary\",\"2nd\",\"3rd\"],\"reasoning\":\"2 sentences\"}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, triageAgent, nurseAgent, groqBody } }];"
       }
     },
     {
@@ -164,7 +215,10 @@
       "name": "Doctor Agent",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [2420, 300],
+      "position": [
+        2420,
+        300
+      ],
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 10000,
@@ -174,8 +228,14 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY_HERE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
@@ -189,7 +249,10 @@
       "name": "Parse Doctor",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [2640, 300],
+      "position": [
+        2640,
+        300
+      ],
       "parameters": {
         "jsCode": "const raw = items[0].json.choices[0].message.content.trim()\n  .replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'').trim();\nconst doctorAgent = JSON.parse(raw);\nconst prev = $('Build Doctor Payload').first().json;\nreturn [{ json: { _input: prev._input, patientAgent: prev.patientAgent, triageAgent: prev.triageAgent, nurseAgent: prev.nurseAgent, doctorAgent } }];"
       }
@@ -199,9 +262,12 @@
       "name": "Build Decision Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [2860, 300],
+      "position": [
+        2860,
+        300
+      ],
       "parameters": {
-        "jsCode": "const { _input, patientAgent, triageAgent, nurseAgent, doctorAgent } = items[0].json;\nconst flags = (nurseAgent.abnormalFlags||[]).join(', ')||'none';\nconst primary = (doctorAgent.differentialDiagnosis||[])[0]||'unknown';\nconst prompt = `You are an ED Decision Agent.\\nPatient: ${patientAgent.summary}\\nTriage: CAT ${triageAgent.category} — ${triageAgent.categoryName}\\nClinical: ${doctorAgent.clinicalPicture}\\nPrimary Dx: ${primary}\\nAbnormal flags: ${flags}\\nDisposition options: Admit to Hospital | Short Stay Unit | Discharge Home\\nRespond in JSON only (no markdown fences):\\n{\"disposition\":\"Admit to Hospital\",\"confidence\":0.85,\"probabilities\":{\"admit\":0.7,\"shortStay\":0.2,\"discharge\":0.1},\"rationale\":\"2-3 sentences\"}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, triageAgent, nurseAgent, doctorAgent, groqBody } }];"
+        "jsCode": "const { _input, patientAgent, triageAgent, nurseAgent, doctorAgent } = items[0].json;\nconst flags = (nurseAgent.abnormalFlags||[]).join(', ')||'none';\nconst primary = (doctorAgent.differentialDiagnosis||[])[0]||'unknown';\nconst prompt = `You are an ED Decision Agent.\\nPatient: ${patientAgent.summary}\\nTriage: CAT ${triageAgent.category} \u2014 ${triageAgent.categoryName}\\nClinical: ${doctorAgent.clinicalPicture}\\nPrimary Dx: ${primary}\\nAbnormal flags: ${flags}\\nDisposition options: Admit to Hospital | Short Stay Unit | Discharge Home\\nRespond in JSON only (no markdown fences):\\n{\"disposition\":\"Admit to Hospital\",\"confidence\":0.85,\"probabilities\":{\"admit\":0.7,\"shortStay\":0.2,\"discharge\":0.1},\"rationale\":\"2-3 sentences\"}`;\nconst groqBody = JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: prompt }], temperature: 0.3 });\nreturn [{ json: { _input, patientAgent, triageAgent, nurseAgent, doctorAgent, groqBody } }];"
       }
     },
     {
@@ -209,7 +275,10 @@
       "name": "Decision Agent",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [3080, 300],
+      "position": [
+        3080,
+        300
+      ],
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 10000,
@@ -219,8 +288,14 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "Authorization", "value": "Bearer YOUR_GROQ_API_KEY_HERE" },
-            { "name": "Content-Type", "value": "application/json" }
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_GROQ_API_KEY_HERE"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
           ]
         },
         "sendBody": true,
@@ -234,7 +309,10 @@
       "name": "Parse Decision",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [3300, 300],
+      "position": [
+        3300,
+        300
+      ],
       "parameters": {
         "jsCode": "const raw = items[0].json.choices[0].message.content.trim()\n  .replace(/^```json\\s*/i,'').replace(/^```\\s*/i,'').replace(/\\s*```$/i,'').trim();\nconst decisionAgent = JSON.parse(raw);\nconst prev = $('Build Decision Payload').first().json;\nreturn [{ json: { patientAgent: prev.patientAgent, triageAgent: prev.triageAgent, nurseAgent: prev.nurseAgent, doctorAgent: prev.doctorAgent, decisionAgent } }];"
       }
@@ -244,15 +322,24 @@
       "name": "Respond",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [3520, 300],
+      "position": [
+        3520,
+        300
+      ],
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ JSON.stringify($json) }}",
         "options": {
           "responseHeaders": {
             "entries": [
-              { "name": "Access-Control-Allow-Origin", "value": "*" },
-              { "name": "Content-Type", "value": "application/json" }
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
             ]
           }
         }
@@ -260,22 +347,184 @@
     }
   ],
   "connections": {
-    "ED Webhook":             { "main": [[{ "node": "Build Patient Payload",  "type": "main", "index": 0 }]] },
-    "Build Patient Payload":  { "main": [[{ "node": "Patient Agent",          "type": "main", "index": 0 }]] },
-    "Patient Agent":          { "main": [[{ "node": "Parse Patient",          "type": "main", "index": 0 }]] },
-    "Parse Patient":          { "main": [[{ "node": "Build Triage Payload",   "type": "main", "index": 0 }]] },
-    "Build Triage Payload":   { "main": [[{ "node": "Triage Agent",           "type": "main", "index": 0 }]] },
-    "Triage Agent":           { "main": [[{ "node": "Parse Triage",           "type": "main", "index": 0 }]] },
-    "Parse Triage":           { "main": [[{ "node": "Build Nurse Payload",    "type": "main", "index": 0 }]] },
-    "Build Nurse Payload":    { "main": [[{ "node": "Nurse Agent",            "type": "main", "index": 0 }]] },
-    "Nurse Agent":            { "main": [[{ "node": "Parse Nurse",            "type": "main", "index": 0 }]] },
-    "Parse Nurse":            { "main": [[{ "node": "Build Doctor Payload",   "type": "main", "index": 0 }]] },
-    "Build Doctor Payload":   { "main": [[{ "node": "Doctor Agent",           "type": "main", "index": 0 }]] },
-    "Doctor Agent":           { "main": [[{ "node": "Parse Doctor",           "type": "main", "index": 0 }]] },
-    "Parse Doctor":           { "main": [[{ "node": "Build Decision Payload", "type": "main", "index": 0 }]] },
-    "Build Decision Payload": { "main": [[{ "node": "Decision Agent",         "type": "main", "index": 0 }]] },
-    "Decision Agent":         { "main": [[{ "node": "Parse Decision",         "type": "main", "index": 0 }]] },
-    "Parse Decision":         { "main": [[{ "node": "Respond",                "type": "main", "index": 0 }]] }
+    "ED Webhook": {
+      "main": [
+        [
+          {
+            "node": "Build Patient Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Patient Payload": {
+      "main": [
+        [
+          {
+            "node": "Patient Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Patient Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Patient",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Patient": {
+      "main": [
+        [
+          {
+            "node": "Build Triage Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Triage Payload": {
+      "main": [
+        [
+          {
+            "node": "Triage Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Triage Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Triage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Triage": {
+      "main": [
+        [
+          {
+            "node": "Build Nurse Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Nurse Payload": {
+      "main": [
+        [
+          {
+            "node": "Nurse Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nurse Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Nurse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Nurse": {
+      "main": [
+        [
+          {
+            "node": "Build Doctor Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Doctor Payload": {
+      "main": [
+        [
+          {
+            "node": "Doctor Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Doctor Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Doctor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Doctor": {
+      "main": [
+        [
+          {
+            "node": "Build Decision Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Decision Payload": {
+      "main": [
+        [
+          {
+            "node": "Decision Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Decision": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
-  "settings": { "executionOrder": "v1" }
+  "settings": {
+    "executionOrder": "v1"
+  }
 }
